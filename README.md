@@ -21,7 +21,7 @@ open_basedir=.:/proc/:/tmp/
 1.获取源代码
 
 ```bash
-	git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
+$ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 ```
 
 或者
@@ -32,14 +32,18 @@ open_basedir=.:/proc/:/tmp/
 
 将插件目录拷贝至 `antSword/antData/plugins/` 目录下即安装成功
 
+## 演示图
+
+![bypass_disable_funcs_main.png](https://i.loli.net/2019/04/14/5cb2c1618ef1b.png)
+
 ## 如何使用
 
 [绕过open_basedir思路（蚁剑插件演示）](https://mp.weixin.qq.com/s/GGnumPklkUNMLZKQL4NbKg)
 
 ## TODO:
 
-[x] LD_PRELOAD (linux only)
-[ ] COM (windown, php 5.3~5.6)
+- [x] LD_PRELOAD (linux only)
+- [ ] COM (windown, php 5.3~5.6)
 
 ## 相关链接
 
