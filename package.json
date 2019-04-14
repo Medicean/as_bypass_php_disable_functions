@@ -1,0 +1,19 @@
+{
+  "name": "绕过disable_functions",
+  "name_en": "Bypass disable_functions",
+  "main": "index.js",
+  "icon": "legal",
+  "version": "0.1",
+  "description": "突破disable_function执行命令, 使用php-cli在目标本地开启web服务, 再由原有web代理到该web服务上",
+  "description_en": "突破disable_function执行命令",
+  "author": {
+    "name": "Medicean & howmp",
+    "email": "Medici.Yan@gmail.com"
+  },
+  "category": "辅助工具",
+  "category_en": "Support",
+  "multiple": false,
+  "scripts": [
+    "php"
+  ]
+}
