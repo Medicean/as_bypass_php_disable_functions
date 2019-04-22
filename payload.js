@@ -320,8 +320,8 @@ module.exports = {
             "shell_name" => basename($_SERVER['SCRIPT_NAME']),
             "phpself" => realpath("."),
             "temp_dir" => sys_get_temp_dir(),
-            "open_basedir" => [],
-            "funcs" => [],
+            "open_basedir" => array(),
+            "funcs" => array(),
         );
         $opath_str = ini_get('open_basedir');
         if(strlen($opath_str)){
@@ -331,7 +331,7 @@ module.exports = {
                 $rt["open_basedir"][$rp] = (is_writable($rp)?1:0);
             }
         }
-        $func_arr = ["dl","putenv","error_reporting","error_log","file_put_contents","file_get_contents","fopen","fclose","fwrite","tempnam","imap_open","symlink"];
+        $func_arr = array("dl","putenv","error_reporting","error_log","file_put_contents","file_get_contents","fopen","fclose","fwrite","tempnam","imap_open","symlink");
         foreach ($func_arr as $f) {
             $rt["funcs"][$f] = (function_exists($f)?1:0);
         }
@@ -358,7 +358,7 @@ module.exports = {
         curl_setopt($aAccess,CURLOPT_HTTPHEADER,$headers);
         if($_SERVER['REQUEST_METHOD']=='POST') {
             curl_setopt($aAccess, CURLOPT_POST, 1);
-            curl_setopt($aAccess, CURLOPT_POSTFIELDS, http_build_query($_POST));
+            curl_setopt($aAccess, CURLOPT_POSTFIELDS, file_get_contents('php://input'));
         }
         $sResponse = curl_exec($aAccess);
         list($headerstr,$sResponse)=parseHeader($sResponse);
