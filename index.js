@@ -19,7 +19,7 @@ class Plugin {
       // 新增模式时需要在这里添加
       // id 为文件名
       { id: "ld_preload", icon: 'file-code-o', type: 'button', text: "LD_PRELOAD"},
-
+      { id: "php_fpm", icon: 'file-code-o', type: 'button', text: "PHP_FPM"},
     ];
     let cores = {};
     self.core_menu.map((_) => {

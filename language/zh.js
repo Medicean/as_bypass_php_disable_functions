@@ -37,5 +37,15 @@ module.exports = {
         genext_err: "生成PHP扩展失败",
       }
     },
+    php_fpm: {
+      title: "PHP-FPM",
+      form: {
+        fpm_addr: 'FPM/FCGI 地址',
+        phpbinary: 'php路径(PHP>=5.3, 并非当前运行的shell php)',
+      },
+      msg: {
+        genext_err: "生成PHP扩展失败",
+      }
+    },
   }
 }

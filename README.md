@@ -43,6 +43,15 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 ## TODO:
 
 - [x] LD_PRELOAD (linux only)
+
+  利用 LD_PRELOAD 环境变量加载 so 文件, LD_PRELOAD 只在 Linux 系统上才有
+
+- [x] PHP-FPM/FCGI
+
+ 适用于PHP-FPM/FCGI 监听在 unix socket 或者 tcp socket 上时使用。常见的比如: `nginx + fpm`
+ 
+ IIS+FPM 使用的是「管道」通信，不适用
+
 - [ ] COM (windown, php 5.3~5.6)
 
 ## 相关链接
