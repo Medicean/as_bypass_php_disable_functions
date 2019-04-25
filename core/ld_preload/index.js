@@ -126,6 +126,7 @@ class LD_PRELOAD extends Base {
         ).then((response) => {
           var ret = response['text'];
           if (ret === '1') {
+            toastr.success(`Upload extension ${ext_path} success.`, LANG_T['success']);
             res(ext_path);
           }else{
             rej("upload extension fail");
@@ -162,11 +163,13 @@ class LD_PRELOAD extends Base {
               self.uploadProxyScript("127.0.0.1", port);
               self.cell.progressOff();
             }else{
+              self.cell.progressOff();
               throw("exploit fail");
-            } 
+            }
           }).catch((err)=>{
-            throw(err)
-          })
+            self.cell.progressOff();
+            toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
+          });
       }).catch((err)=>{
         self.cell.progressOff();
         toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);

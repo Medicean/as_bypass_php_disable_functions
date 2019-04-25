@@ -54,11 +54,17 @@ class Plugin {
     self.toolbar.attachEvent('onClick', (id)=>{
       switch (id) {
         case 'start':
-          self.core_instance.exploit();
+          self.toolbar.disableItem('start');
+          try{
+            self.core_instance.exploit();
+          }catch(e){
+            toastr.error(JSON.stringify(e), LANG_T['error']);
+          }
           break;
         default:
         if (self.cores.hasOwnProperty(id)) {
           self.core_instance = new self.cores[id](self.config_cell.cell, self);
+          self.toolbar.enableItem('start');
         }
         break;
       }
@@ -168,6 +174,7 @@ class Plugin {
         type: 'button',
         text: LANG['toolbar']['start'],
         icon: 'play',
+        enabled: false,
       },
     ]);
     self.toolbar = toolbar;

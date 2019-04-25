@@ -159,6 +159,7 @@ class PHP_FPM extends Base {
         ).then((response) => {
           var ret = response['text'];
           if (ret === '1') {
+            toastr.success(`Upload extension ${ext_path} success.`, LANG_T['success']);
             res(ext_path);
           }else{
             rej("upload extension fail");
@@ -221,7 +222,8 @@ class PHP_FPM extends Base {
               throw("exploit fail");
             } 
           }).catch((err)=>{
-            throw(err)
+            self.cell.progressOff();
+            toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
           })
       }).catch((err)=>{
         self.cell.progressOff();
