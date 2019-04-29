@@ -37,5 +37,15 @@ module.exports = {
         genext_err: "Generate PHP extension failed",
       }
     },
+    php_fpm: {
+      title: "PHP-FPM",
+      form: {
+        fpm_addr: 'FPM/FCGI Address',
+        phpbinary: 'php-cli Path (PHP>=5.3)',
+      },
+      msg: {
+        genext_err: "Generate PHP extension failed",
+      }
+    },
   }
 }

