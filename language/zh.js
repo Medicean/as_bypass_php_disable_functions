@@ -38,7 +38,7 @@ module.exports = {
       }
     },
     php_fpm: {
-      title: "PHP-FPM",
+      title: "Fastcgi/PHP-FPM",
       form: {
         fpm_addr: 'FPM/FCGI 地址',
         phpbinary: 'php路径(PHP>=5.3, 并非当前运行的shell php)',
