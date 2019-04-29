@@ -100,6 +100,12 @@ class PHP_FPM extends Base {
         label: '',
         name: 'status_msg'
       }, ]
+    }, {
+      type: 'block',
+      inputWidth: 'auto',
+      list: [
+        { type: 'template', label: "Reference", style: "width:100%;", format:references },
+      ]
     }], true);
     return form;
   }
@@ -236,4 +242,18 @@ class PHP_FPM extends Base {
     return;
   }
 }
+function references(name, value) {
+  let refs = {
+    "Fastcgi协议分析 && PHP-FPM未授权访问漏洞 && Exp编写 (Author: phithon)": "https://www.leavesongs.com/penetration/fastcgi-and-php-fpm.html",
+    "Fastcgi配置不当对外开放利用 (Author: Vinc)": "http://vinc.top/2016/11/23/%E3%80%90%E8%BF%90%E7%BB%B4%E5%AE%89%E5%85%A8%E3%80%91fastcgi%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E5%AF%B9%E5%A4%96%E5%BC%80%E6%94%BE%E5%88%A9%E7%94%A8/",
+    "PHP-FastCGI-Client (Author: adoy)": "https://github.com/adoy/PHP-FastCGI-Client",
+    "wofeiwo/fcgi_jailbreak.php": "https://gist.github.com/wofeiwo/4f41381a388accbf91f8",
+  };
+  let ret = "";
+  Object.keys(refs).map((k) => {
+    ret += `<li style="padding-bottom: 10px;"><a href='${refs[k]}' target='blank'>${k}</a></li>`;
+  })
+  return `<div class='simple_link'><ul>${ret}</ul></div>`;
+}
+
 module.exports = PHP_FPM;
