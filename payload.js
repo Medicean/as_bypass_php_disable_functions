@@ -343,7 +343,7 @@ module.exports = {
         return `<?php
         set_time_limit(120);
         $aAccess = curl_init();
-        curl_setopt($aAccess, CURLOPT_URL, "${url}");
+        curl_setopt($aAccess, CURLOPT_URL, "${url}?".$_SERVER['QUERY_STRING']);
         curl_setopt($aAccess, CURLOPT_HEADER, true);
         curl_setopt($aAccess, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($aAccess, CURLOPT_FOLLOWLOCATION, false);
@@ -380,7 +380,7 @@ module.exports = {
             return "<{$arrMatche[1]} {$arrMatche[2]} {$arrMatche[3]}=\\"{$sPath}\\"" ;
         }
         function get_client_header(){
-            $headers=array();
+            $headers=array('Expect:');
             foreach($_SERVER as $k=>$v){
                 if(strpos($k,'HTTP_')===0){
                     $k=strtolower(preg_replace('/^HTTP/', '', $k));
