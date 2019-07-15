@@ -16,10 +16,10 @@ module.exports = {
     phpself: "当前目录",
     func: "函数支持",
   },
-  precheck:{
+  precheck: {
     only_linux: "仅支持Linux操作系统",
     only_win: "仅支持Windows操作系统",
-    require_func: (func)=> `${func} 函数不可用`,
+    require_func: (func) => `${func} 函数不可用`,
   },
   core: {
     base: {
@@ -45,6 +45,14 @@ module.exports = {
       },
       msg: {
         genext_err: "生成PHP扩展失败",
+      }
+    },
+    apache_mod_cgi: {
+      title: "Apache_mod_cgi",
+      status_cell: {
+        modcgi: "CGI支持",
+        writable: "当前目录可写",
+        htaccess: "htaccess支持",
       }
     },
   }

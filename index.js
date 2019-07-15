@@ -4,7 +4,9 @@ const WIN = require('ui/window'); // 窗口库
 const LANG_T = antSword['language']['toastr']; // 通用通知提示
 const path = require('path');
 
-const { BaseInfo } = require('./payload');
+const {
+  BaseInfo
+} = require('./payload');
 const LANG = require('./language/'); // 插件语言库
 
 /**
@@ -18,8 +20,24 @@ class Plugin {
     self.core_menu = [
       // 新增模式时需要在这里添加
       // id 为文件名
-      { id: "ld_preload", icon: 'file-code-o', type: 'button', text: "LD_PRELOAD"},
-      { id: "php_fpm", icon: 'file-code-o', type: 'button', text: "Fastcgi/PHP_FPM"},
+      {
+        id: "ld_preload",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "LD_PRELOAD"
+      },
+      {
+        id: "php_fpm",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "Fastcgi/PHP_FPM"
+      },
+      {
+        id: "apache_mod_cgi",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "Apache_mod_cgi"
+      },
     ];
     let cores = {};
     self.core_menu.map((_) => {
@@ -50,23 +68,23 @@ class Plugin {
     self.status_cell = self.createStatusCell(self.layout.cells('b'));
     self.core_instance = null;
     self.reloadStatusCell();
-    
-    self.toolbar.attachEvent('onClick', (id)=>{
+
+    self.toolbar.attachEvent('onClick', (id) => {
       switch (id) {
         case 'start':
           self.toolbar.disableItem('start');
-          try{
+          try {
             self.core_instance.exploit();
-          }catch(e){
+          } catch (e) {
             toastr.error(JSON.stringify(e), LANG_T['error']);
           }
           break;
         default:
-        if (self.cores.hasOwnProperty(id)) {
-          self.core_instance = new self.cores[id](self.config_cell.cell, self);
-          self.toolbar.enableItem('start');
-        }
-        break;
+          if (self.cores.hasOwnProperty(id)) {
+            self.core_instance = new self.cores[id](self.config_cell.cell, self);
+            self.toolbar.enableItem('start');
+          }
+          break;
       }
     });
     // ######### 上方是具体插件代码,由插件作者编写 ##########
@@ -95,63 +113,106 @@ class Plugin {
     cell.fixSize(1, 0);
     cell.setText(`<i class="fa fa-info"></i> ${LANG['status_cell']['title']}`);
     let form = cell.attachForm([{
-      type: 'settings',
-      position: 'label-left',
-      labelWidth: 80,
-    }, {
-      type: 'block',
-      inputWidth: 'auto',
-      list: [
-        { type: 'settings', blockOffset: 0, labelAlign: "left" },
-        { type: "label", label: `<span>${LANG['status_cell']['ver']}</span>` },
-        { type: "label", label: `<span>${LANG['status_cell']['arch']}</span>` },
-        { type: "label", label: `<span>${LANG['status_cell']['os']}</span>` },
-        { type: "label", label: `<span>${LANG['status_cell']['phpself']}</span>` },
-        { type: "newcolumn" },
-        { type: "label", name: "ver", label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["ver"])}</span>` },
-        { type: "label", name: "arch", label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["arch"])}</span>` },
-        { type: "label", name: "os", label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["os"])}</span>` },
-        { type: "label", name: "phpself", label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["phpself"])}</span>` },
-      ]
-    },
-    {
-      type: 'fieldset', blockOffset: 0, label: "open_basedir", width: "auto", name: "open_basedir", list: (()=>{
-        let ret = [];
-        Object.keys(self.infodata.open_basedir).map((v)=>{
-          if(self.infodata.open_basedir[v] == 1) {
-            ret.push({
-              type: "label",
-              label: `<span style='color: green;'>${antSword.noxss(v)}</span>`
-            });
-          }else{
-            ret.push({
-              type: "label",
-              label: `<span style='color: red;'>${antSword.noxss(v)}</span>`
-            });
-          }
-        });
-        return ret;
-      })()
-    },
-    {
-      type: 'fieldset', blockOffset: 0, label: LANG['status_cell']['func'], width: "auto", name: "funcs", list: (()=>{
-        let ret = [];
-        Object.keys(self.infodata.funcs).map((v)=>{
-          let status = "";
-          if(self.infodata.funcs[v] == 1) {
-            status = "<span style='color: green;'>√</span>";
-          }else{
-            status = "<span style='color: red;'>x</span>";
-          }
-          ret.push({
+        type: 'settings',
+        position: 'label-left',
+        labelWidth: 80,
+      }, {
+        type: 'block',
+        inputWidth: 'auto',
+        list: [{
+            type: 'settings',
+            blockOffset: 0,
+            labelAlign: "left"
+          },
+          {
             type: "label",
-            labelWidth: 150,
-            label: `${antSword.noxss(v)} ${status}`
+            label: `<span>${LANG['status_cell']['ver']}</span>`
+          },
+          {
+            type: "label",
+            label: `<span>${LANG['status_cell']['arch']}</span>`
+          },
+          {
+            type: "label",
+            label: `<span>${LANG['status_cell']['os']}</span>`
+          },
+          {
+            type: "label",
+            label: `<span>${LANG['status_cell']['phpself']}</span>`
+          },
+          {
+            type: "newcolumn"
+          },
+          {
+            type: "label",
+            name: "ver",
+            label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["ver"])}</span>`
+          },
+          {
+            type: "label",
+            name: "arch",
+            label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["arch"])}</span>`
+          },
+          {
+            type: "label",
+            name: "os",
+            label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["os"])}</span>`
+          },
+          {
+            type: "label",
+            name: "phpself",
+            label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["phpself"])}</span>`
+          },
+        ]
+      },
+      {
+        type: 'fieldset',
+        blockOffset: 0,
+        label: "open_basedir",
+        width: "auto",
+        name: "open_basedir",
+        list: (() => {
+          let ret = [];
+          Object.keys(self.infodata.open_basedir).map((v) => {
+            if (self.infodata.open_basedir[v] == 1) {
+              ret.push({
+                type: "label",
+                label: `<span style='color: green;'>${antSword.noxss(v)}</span>`
+              });
+            } else {
+              ret.push({
+                type: "label",
+                label: `<span style='color: red;'>${antSword.noxss(v)}</span>`
+              });
+            }
           });
-        });
-        return ret;
-      })()
-    }
+          return ret;
+        })()
+      },
+      {
+        type: 'fieldset',
+        blockOffset: 0,
+        label: LANG['status_cell']['func'],
+        width: "auto",
+        name: "funcs",
+        list: (() => {
+          let ret = [];
+          Object.keys(self.infodata.funcs).map((v) => {
+            let status = "";
+            if (self.infodata.funcs[v] == 1) {
+              status = "<span style='color: green;'>√</span>";
+            } else {
+              status = "<span style='color: red;'>x</span>";
+            }
+            ret.push({
+              type: "label",
+              labelWidth: 150,
+              label: `${antSword.noxss(v)} ${status}`
+            });
+          });
+          return ret;
+        })()
+      }
     ], true);
     return {
       cell: cell,
@@ -163,20 +224,19 @@ class Plugin {
     let self = this;
     let toolbar = self.win.win.attachToolbar();
     toolbar.loadStruct([{
-        id: 'new',
-        type: 'buttonSelect',
-        icon: 'plus-circle',
-        openAll: true,
-        text: LANG['toolbar']['select_mode'],
-        options: self.core_menu,
-      }, {
-        id: 'start',
-        type: 'button',
-        text: LANG['toolbar']['start'],
-        icon: 'play',
-        enabled: false,
-      },
-    ]);
+      id: 'new',
+      type: 'buttonSelect',
+      icon: 'plus-circle',
+      openAll: true,
+      text: LANG['toolbar']['select_mode'],
+      options: self.core_menu,
+    }, {
+      id: 'start',
+      type: 'button',
+      text: LANG['toolbar']['start'],
+      icon: 'play',
+      enabled: false,
+    }, ]);
     self.toolbar = toolbar;
   }
   createConfigCell(cell) {

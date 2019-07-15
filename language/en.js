@@ -16,10 +16,10 @@ module.exports = {
     phpself: "Current directory",
     func: "Function support",
   },
-  precheck:{
+  precheck: {
     only_linux: "Only supports Linux operating system",
     only_win: "Only supports Windows operating system",
-    require_func: (func)=> `${func} function is not available`,
+    require_func: (func) => `${func} function is not available`,
   },
   core: {
     base: {
@@ -45,6 +45,14 @@ module.exports = {
       },
       msg: {
         genext_err: "Generate PHP extension failed",
+      }
+    },
+    apache_mod_cgi: {
+      title: "Apache_mod_cgi",
+      status_cell: {
+        modcgi: "CGI",
+        writable: "Writeable",
+        htaccess: "htaccess",
       }
     },
   }
