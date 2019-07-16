@@ -103,6 +103,16 @@ class APACHE_MOD_CGI extends Base {
           label: '',
           name: 'status_msg'
         }, ]
+      },
+      {
+        type: 'block',
+        inputWidth: 'auto',
+        list: [{
+          type: 'template',
+          label: "Reference",
+          style: "width:100%;",
+          format: references
+        }, ]
       }
     ], true);
     return form;
@@ -194,4 +204,18 @@ echo @file_get_contents($target);`,
       });
   }
 }
+
+function references(name, value) {
+  let refs = {
+    "AntSword-Labs/bypass_disable_functions/3": "https://github.com/AntSwordProject/AntSword-Labs/blob/master/bypass_disable_functions/3",
+    "Bypass PHP system functions disabled via mod_cgi (0cx.cc)": "http://0cx.cc/bypass_disabled_via_mod_cgi.jspx",
+    "github.com/l3m0n/Bypass_Disable_functions_Shell": "https://github.com/l3m0n/Bypass_Disable_functions_Shell/blob/master/exp/apache_mod_cgi/exp.php",
+  };
+  let ret = "";
+  Object.keys(refs).map((k) => {
+    ret += `<li style="padding-bottom: 10px;"><a href='${refs[k]}' target='blank'>${k}</a></li>`;
+  })
+  return `<div class='simple_link'><ul>${ret}</ul></div>`;
+}
+
 module.exports = APACHE_MOD_CGI;
