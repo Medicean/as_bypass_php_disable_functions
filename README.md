@@ -40,6 +40,11 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 
 [绕过open_basedir思路（蚁剑插件演示）](https://mp.weixin.qq.com/s/GGnumPklkUNMLZKQL4NbKg)
 
+
+## 测试环境
+
+参见 [AntSword-Labs/bypass_disable_functions](https://github.com/AntSwordProject/AntSword-Labs/tree/master/bypass_disable_functions/)
+
 ## TODO:
 
 - [x] LD_PRELOAD (linux only)
@@ -52,7 +57,8 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
  
  IIS+FPM 使用的是「管道」通信，不适用
 
-- [ ] COM (windown, php 5.3~5.6)
+- [x] COM (windown, php 5.3~5.6 已在antsword核心集成)
+- [x] Apache Mod CGI
 
 ## 相关链接
 
