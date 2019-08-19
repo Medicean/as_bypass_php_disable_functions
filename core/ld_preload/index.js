@@ -179,6 +179,7 @@ class LD_PRELOAD extends Base {
           var ret = response['text'];
           if (ret === '1') {
             toastr.success(LANG['success'], LANG_T['success']);
+            self.form.setItemLabel('status_msg', `127.0.0.1:${port}`);
             self.uploadProxyScript("127.0.0.1", port);
             self.cell.progressOff();
           } else {

