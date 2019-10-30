@@ -99,6 +99,7 @@ class Plugin {
       if (res.indexOf("ERROR://") > -1) {
         throw res;
       } else if (res != "") {
+        res = antSword.unxss(res, false);
         self.infodata = Object.assign(self.infodata, JSON.parse(res));
         self.status_cell = self.createStatusCell(self.layout.cells('b'));
       }
