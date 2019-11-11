@@ -38,6 +38,12 @@ class Plugin {
         type: 'button',
         text: "Apache_mod_cgi"
       },
+      {
+        id: "json_serializer_uaf",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "JSON_Serializer_UAF"
+      },
     ];
     let cores = {};
     self.core_menu.map((_) => {

@@ -55,5 +55,14 @@ module.exports = {
         htaccess: "htaccess支持",
       }
     },
+    json_serializer_uaf: {
+      title: "Json Serializer UAF",
+      status_cell: {
+        ver: 'PHP版本',
+      },
+      err: {
+        phpvererr: "PHP 版本不符, 仅支持 7.1.x, 7.2.0~7.2.18, 7.3.0~7.3.5"
+      }
+    },
   }
 }
