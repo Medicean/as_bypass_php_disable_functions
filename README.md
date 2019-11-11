@@ -59,6 +59,7 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 
 - [x] COM (windown, php 5.3~5.6 已在antsword核心集成)
 - [x] Apache Mod CGI
+- [x] Json Serializer UAF ([PHP-Bug-#77843](https://bugs.php.net/bug.php?id=77843))
 
 ## 相关链接
 
