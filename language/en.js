@@ -64,5 +64,14 @@ module.exports = {
         phpvererr: "PHP Version not support, only support 7.1.x, 7.2.0~7.2.18, 7.3.0~7.3.5"
       }
     },
+    php7_gc_uaf: {
+      title: "PHP7 GC with Certain Destructors UAF",
+      status_cell: {
+        ver: 'PHP_VERSION',
+      },
+      err: {
+        phpvererr: "PHP Version not support, only support 7.0.x, 7.1.x, 7.2.x, 7.3.x"
+      }
+    },
   }
 }

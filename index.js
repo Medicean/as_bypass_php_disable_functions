@@ -44,6 +44,12 @@ class Plugin {
         type: 'button',
         text: "JSON_Serializer_UAF"
       },
+      {
+        id: "php7_gc_uaf",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "PHP7_GC_UAF"
+      },
     ];
     let cores = {};
     self.core_menu.map((_) => {
