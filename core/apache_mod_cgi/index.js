@@ -148,7 +148,7 @@ class APACHE_MOD_CGI extends Base {
             self.core
               .request(check_code)
               .then((_ret) => {
-                let _res = _ret['text'];
+                let _res = antSword.unxss(_ret['text']);
                 self.infodata = Object.assign(self.infodata, JSON.parse(_res));
                 self.form = self.createForm(self.cell);
                 res(self.infodata);
