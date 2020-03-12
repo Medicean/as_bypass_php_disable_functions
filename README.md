@@ -61,6 +61,7 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 - [x] Apache Mod CGI
 - [x] Json Serializer UAF ([PHP-Bug-#77843](https://bugs.php.net/bug.php?id=77843))
 - [x] GC with Certain Destructors UAF ([PHP-Bug-#72530](https://bugs.php.net/bug.php?id=72530))
+- [x] PHP7 FFI
 
 ## 相关链接
 

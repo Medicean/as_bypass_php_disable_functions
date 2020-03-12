@@ -73,5 +73,18 @@ module.exports = {
         phpvererr: "PHP 版本不符, 仅支持 7.0.x, 7.1.x, 7.2.x, 7.3.x"
       }
     },
+    php74_ffi: {
+      title: "PHP>=7.4 FFI扩展执行命令",
+      status_cell: {
+        ver: 'PHP版本',
+        ffi: 'FFI扩展',
+        ffi_enable: 'FFI Enable',
+      },
+      err: {
+        phpvererr: "PHP 版本不符, 必须 7.4 以上",
+        ffi_not_loaded: "未开启FFI扩展",
+        ffi_not_enable: "ffi.enabled 未设置为 On, 不能利用.默认为 preload(仅允许在 php-cli 和 preload 中使用)",
+      }
+    },
   }
 }

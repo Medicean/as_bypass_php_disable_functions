@@ -86,5 +86,28 @@ class Base {
       toastr.error(`${LANG['error']}: ${JSON.stringify(err)}`, LANG_T['error']);
     });
   }
+
+  /*
+  比较 x.y.z 版本号大小
+  */
+  CompVersion(minVer, curVer) {
+    // 如果版本相同
+    if (curVer === minVer) {
+      return true
+    }
+    let currVerArr = curVer.split(".");
+    let minVerArr = minVer.split(".");
+    let len = Math.max(currVerArr.length, minVerArr.length);
+    for (let i = 0; i < len; i++) {
+      let minVal = ~~minVerArr[i],
+        curVal = ~~currVerArr[i];
+      if (minVal < curVal) {
+        return true;
+      } else if (minVal > curVal) {
+        return false;
+      }
+    }
+    return false;
+  }
 }
 module.exports = Base;

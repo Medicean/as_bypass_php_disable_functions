@@ -73,5 +73,18 @@ module.exports = {
         phpvererr: "PHP Version not support, only support 7.0.x, 7.1.x, 7.2.x, 7.3.x"
       }
     },
+    php74_ffi: {
+      title: "PHP>=7.4 FFI Extension Execute Command",
+      status_cell: {
+        ver: 'PHP_VERSION',
+        ffi: 'FFI_Extension',
+        ffi_enable: 'FFI Enable',
+      },
+      err: {
+        phpvererr: "PHP Version not support, need PHP>=7.4",
+        ffi_not_loaded: "FFI Extension not loaded",
+        ffi_not_enable: "ffi.enabled not On, can not exploit. default is preload(only call ffi in php-cli and preload)",
+      }
+    },
   }
 }

@@ -50,6 +50,12 @@ class Plugin {
         type: 'button',
         text: "PHP7_GC_UAF"
       },
+      {
+        id: "php74_ffi",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "PHP74_FFI"
+      },
     ];
     let cores = {};
     self.core_menu.map((_) => {
