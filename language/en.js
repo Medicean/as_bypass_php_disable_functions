@@ -73,6 +73,15 @@ module.exports = {
         phpvererr: "PHP Version not support, only support 7.0.x, 7.1.x, 7.2.x, 7.3.x"
       }
     },
+    php7_backtrace_uaf: {
+      title: "PHP7 Backtrace UAF",
+      status_cell: {
+        ver: 'PHP_VERSION',
+      },
+      err: {
+        phpvererr: "PHP Version not support, only support 7.0.x, 7.1.x, 7.2.x, 7.3.0~7.3.14, 7.4.0~7.4.2"
+      }
+    },
     php74_ffi: {
       title: "PHP>=7.4 FFI Extension Execute Command",
       status_cell: {

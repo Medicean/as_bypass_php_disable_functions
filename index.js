@@ -51,6 +51,12 @@ class Plugin {
         text: "PHP7_GC_UAF"
       },
       {
+        id: "php7_backtrace_uaf",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "PHP7_Backtrace_UAF"
+      },
+      {
         id: "php74_ffi",
         icon: 'file-code-o',
         type: 'button',

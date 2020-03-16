@@ -73,6 +73,15 @@ module.exports = {
         phpvererr: "PHP 版本不符, 仅支持 7.0.x, 7.1.x, 7.2.x, 7.3.x"
       }
     },
+    php7_backtrace_uaf: {
+      title: "PHP7 Backtrace UAF",
+      status_cell: {
+        ver: 'PHP版本',
+      },
+      err: {
+        phpvererr: "PHP 版本不符, 仅支持 7.0.x, 7.1.x, 7.2.x, 7.3.0~7.3.14, 7.4.0~7.4.2"
+      }
+    },
     php74_ffi: {
       title: "PHP>=7.4 FFI扩展执行命令",
       status_cell: {
