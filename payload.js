@@ -331,7 +331,7 @@ module.exports = {
                 $rt["open_basedir"][$rp] = (is_writable($rp)?1:0);
             }
         }
-        $func_arr = array("dl", "putenv", "error_reporting", "error_log", "file_put_contents", "file_get_contents", "fopen", "fclose", "fwrite", "tempnam", "imap_open", "symlink", "curl_init", "fsockopen");
+        $func_arr = array("dl", "putenv", "error_reporting", "error_log", "file_put_contents", "file_get_contents", "fopen", "fclose", "fwrite", "tempnam", "imap_open", "symlink", "curl_init", "fsockopen", "iconv");
         foreach ($func_arr as $f) {
             $rt["funcs"][$f] = (function_exists($f)?1:0);
         }

@@ -95,5 +95,14 @@ module.exports = {
         ffi_not_enable: "ffi.enabled 未设置为 On, 不能利用.默认为 preload(仅允许在 php-cli 和 preload 中使用)",
       }
     },
+    iconv: {
+      title: "iconv modules 执行命令",
+      form: {
+        phpbinary: 'php路径(PHP>=5.3, 并非当前运行的shell php)',
+      },
+      msg: {
+        genext_err: "生成PHP扩展失败",
+      }
+    },
   }
 }

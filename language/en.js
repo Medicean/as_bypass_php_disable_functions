@@ -95,5 +95,14 @@ module.exports = {
         ffi_not_enable: "ffi.enabled not On, can not exploit. default is preload(only call ffi in php-cli and preload)",
       }
     },
+    iconv: {
+      title: "iconv modules Execute Command",
+      form: {
+        phpbinary: 'php-cli Path (PHP>=5.3)',
+      },
+      msg: {
+        genext_err: "Generate PHP extension failed",
+      }
+    },
   }
 }

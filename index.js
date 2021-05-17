@@ -62,6 +62,12 @@ class Plugin {
         type: 'button',
         text: "PHP74_FFI"
       },
+      {
+        id: "iconv",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "iconv"
+      }
     ];
     let cores = {};
     self.core_menu.map((_) => {
