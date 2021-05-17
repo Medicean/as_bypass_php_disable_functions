@@ -32,6 +32,7 @@ class LD_PRELOAD extends Base {
   }
 
   createForm(cell) {
+    let self = this;
     let form = cell.attachForm([{
         type: 'settings',
         position: 'label-left',
@@ -43,6 +44,32 @@ class LD_PRELOAD extends Base {
         list: [{
             type: 'label',
             label: LD_PRELOAD_LANG['title']
+          },
+          {
+            type: 'block',
+            inputWidth: 'auto',
+            list: [{
+                type: 'settings'
+              },
+              {
+                type: "label",
+                label: `<span>putenv</span>`,
+              },
+              {
+                type: "label",
+                label: `<span>error_log</span>`,
+              },
+              {
+                type: "newcolumn"
+              },
+              {
+                type: "label",
+                label: `<span style='color: ${self.top.infodata.funcs['putenv']?"green":"red"};'>${antSword.noxss(self.top.infodata.funcs['putenv']?'YES':'NO')}</span>`,
+              }, {
+                type: "label",
+                label: `<span style='color: ${self.top.infodata.funcs['error_log']?"green":"red"};'>${antSword.noxss(self.top.infodata.funcs['error_log']?'YES':'NO')}</span>`,
+              },
+            ],
           },
           {
             type: 'combo',
