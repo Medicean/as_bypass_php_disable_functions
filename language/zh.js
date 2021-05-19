@@ -104,5 +104,14 @@ module.exports = {
         genext_err: "生成PHP扩展失败",
       }
     },
+    php7_reflectionproperty_uaf: {
+      title: "PHP<=7.4.8 ReflectionProperty UAF",
+      status_cell: {
+        ver: 'PHP版本',
+      },
+      err: {
+        phpvererr: "PHP 版本不符, 必须 7.4.8 以下",
+      }
+    },
   }
 }

@@ -67,6 +67,11 @@ class Plugin {
         icon: 'file-code-o',
         type: 'button',
         text: "iconv"
+      },{
+        id: "php7_reflectionproperty_uaf",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "PHP7_ReflectionProperty_UAF"
       }
     ];
     let cores = {};
