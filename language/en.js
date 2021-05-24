@@ -104,5 +104,14 @@ module.exports = {
         genext_err: "Generate PHP extension failed",
       }
     },
+    php7_reflectionproperty_uaf: {
+      title: "PHP<=7.4.8 ReflectionProperty UAF",
+      status_cell: {
+        ver: 'PHP_VERSION',
+      },
+      err: {
+        phpvererr: "PHP Version not support, need <=7.4.8 ",
+      }
+    },
   }
 }

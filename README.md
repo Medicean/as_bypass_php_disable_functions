@@ -64,6 +64,7 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 - [X] Backtrace UAF ([PHP-Bug-#76047](https://bugs.php.net/bug.php?id=76047))
 - [x] PHP7 FFI
 - [x] iconv
+- [x] PHP7 ReflectionProperty UAF ([PHP-Bug-#79820](https://bugs.php.net/bug.php?id=79820))
 
 ## 相关链接
 
