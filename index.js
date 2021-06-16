@@ -177,6 +177,10 @@ class Plugin {
             label: `<span>${LANG['status_cell']['phpself']}</span>`
           },
           {
+            type: "label",
+            label: `<span>${LANG['status_cell']['shell_dir']}</span>`
+          },
+          {
             type: "newcolumn"
           },
           {
@@ -198,6 +202,11 @@ class Plugin {
             type: "label",
             name: "phpself",
             label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["phpself"])}</span>`
+          },
+          {
+            type: "label",
+            name: "shell_dir",
+            label: `<span style='color: #000000;'>${antSword.noxss(self.infodata["shell_dir"])}</span>`
           },
         ]
       },

@@ -318,7 +318,8 @@ module.exports = {
             "arch" => (PHP_INT_SIZE==4?32:64),
             "ver" => substr(PHP_VERSION,0,3),
             "shell_name" => basename($_SERVER['SCRIPT_NAME']),
-            "phpself" => realpath("."),
+            "shell_dir" => dirname($_SERVER['SCRIPT_FILENAME']),
+            "phpself" => $_SERVER['DOCUMENT_ROOT'],
             "temp_dir" => sys_get_temp_dir(),
             "open_basedir" => array(),
             "funcs" => array(),
@@ -330,6 +331,7 @@ module.exports = {
                 $rp = realpath($p);
                 $rt["open_basedir"][$rp] = (is_writable($rp)?1:0);
             }
+            $rt["open_basedir"][$rt["phpself"]] = (is_writable($rt["phpself"])?1:0);
         }
         $func_arr = array("dl", "putenv", "error_reporting", "error_log", "file_put_contents", "file_get_contents", "fopen", "fclose", "fwrite", "tempnam", "imap_open", "symlink", "curl_init", "fsockopen", "iconv");
         foreach ($func_arr as $f) {

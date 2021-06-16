@@ -15,6 +15,7 @@ module.exports = {
     os: "OS",
     phpself: "Current directory",
     func: "Function support",
+    shell_dir: "Shell directory",
   },
   precheck: {
     only_linux: "Only supports Linux operating system",

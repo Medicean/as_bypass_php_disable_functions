@@ -3,7 +3,7 @@
   "name_en": "Bypass disable_functions",
   "main": "index.js",
   "icon": "legal",
-  "version": "0.12",
+  "version": "0.13",
   "description": "突破disable_function执行命令, 使用php-cli在目标本地开启web服务, 再由原有web代理到该web服务上",
   "description_en": "突破disable_function执行命令",
   "author": {
@@ -14,6 +14,7 @@
   "category_en": "Support",
   "multiple": false,
   "scripts": [
-    "php"
+    "php",
+    "php4"
   ]
 }

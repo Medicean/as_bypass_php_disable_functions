@@ -15,6 +15,7 @@ module.exports = {
     os: "操作系统",
     phpself: "当前目录",
     func: "函数支持",
+    shell_dir: "Shell目录",
   },
   precheck: {
     only_linux: "仅支持Linux操作系统",

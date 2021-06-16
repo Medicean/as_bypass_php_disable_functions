@@ -153,7 +153,7 @@ class PHP_FPM extends Base {
       let wdir = "";
       if (self.isOpenBasedir) {
         for (var v in self.top.infodata.open_basedir) {
-          if (self.top.infodata.open_basedir[v] == 1) {
+          if (self.top.infodata.open_basedir[v] == 1) { // 目录可写
             if (v == self.top.infodata.phpself) {
               wdir = v;
             } else {
@@ -240,6 +240,7 @@ class PHP_FPM extends Base {
           var ret = response['text'];
           if (ret === '1') {
             toastr.success(LANG['success'], LANG_T['success']);
+            self.form.setItemLabel('status_msg', `127.0.0.1:${port}`);
             self.uploadProxyScript("127.0.0.1", port);
             self.cell.progressOff();
           } else {

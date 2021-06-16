@@ -72,13 +72,13 @@ class Base {
     }
     self.top.core.request(
       self.top.core.filemanager.create_file({
-        path: `${self.top.infodata.phpself}/.antproxy.php`,
+        path: `${self.top.infodata.shell_dir}/.antproxy.php`,
         content: proxycontent,
       })
     ).then((res) => {
       let ret = res['text'];
       if (ret === '1') {
-        toastr.success(PROXY_LANG['success'](`${self.top.infodata.phpself}/.antproxy.php`), LANG_T['success']);
+        toastr.success(PROXY_LANG['success'](`${self.top.infodata.shell_dir}/.antproxy.php`), LANG_T['success']);
       } else {
         toastr.error(PROXY_LANG['fail'], LANG_T['error']);
       }
