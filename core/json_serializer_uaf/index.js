@@ -124,9 +124,13 @@ class JSON_SERIALIZER_UAF extends Base {
   exploit() {
     let self = this;
     self.core = self.top.core;
+    let binary = '/bin/sh'
+    if(self.top.infodata.os.toLowerCase().startsWith('win')) {
+      binary = 'cmd'
+    }
     new antSword.module.terminal(self.top.opt, {
       exec: (arg = {
-        bin: '/bin/bash',
+        bin: binary,
         cmd: ''
       }) => {
         return {

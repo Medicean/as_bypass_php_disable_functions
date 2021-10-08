@@ -117,5 +117,14 @@ module.exports = {
         phpvererr: "PHP 版本不符, 必须 7.4.8 以下",
       }
     },
+    php7_userfilter: {
+      title: "PHP 7.0-8.0 disable_functions bypass [user_filter]",
+      status_cell: {
+        ver: 'PHP版本',
+      },
+      err: {
+        phpvererr: "PHP 版本不符, 仅支持 7.0.x, 7.1.x, 7.2.x, 7.3.x, 7.4.x, 8.0.x"
+      }
+    },
   }
 }

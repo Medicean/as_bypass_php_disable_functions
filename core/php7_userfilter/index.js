@@ -5,11 +5,11 @@ const LANG = require('../../language'); // 插件语言库
 const LANG_T = antSword['language']['toastr']; // 通用通知提示
 const nodeurl = require('url');
 const {
-  PHP7_GC_UAF_EXP
+  PHP7_UserFilter_EXP
 } = require('../../payload');
-let PHP7_GC_UAF_LANG = LANG['core']['php7_gc_uaf'];
+let PHP7_USERFILTER_LANG = LANG['core']['php7_userfilter'];
 
-class PHP7_GC_UAF extends Base {
+class PHP7_UserFilter extends Base {
   /**
    * 
    * @param {dhtmlxObject} cell 组件
@@ -31,16 +31,15 @@ class PHP7_GC_UAF extends Base {
   precheck() {
     let self = this;
     let infodata = self.top.infodata;
-    if (infodata.os.toLowerCase() !== "linux") {
-      toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
-      return false;
-    }
-    if (infodata.ver != "7.0" &&
-      infodata.ver != "7.1" && infodata.ver != "7.2" && infodata.ver != "7.3") {
-      toastr.error(PHP7_GC_UAF_LANG['err']['phpvererr'], LANG_T['error']);
-      return false;
-    }
-    // TODO: 检查详细版本号
+    // if (infodata.os.toLowerCase() !== "linux") {
+    //   toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
+    //   return false;
+    // }
+    // if (infodata.ver != "7.0" &&
+    //   infodata.ver != "7.1" && infodata.ver != "7.2" && infodata.ver != "7.3") {
+    //   toastr.error(PHP7_USERFILTER_LANG['err']['phpvererr'], LANG_T['error']);
+    //   return false;
+    // }
     return true;
   }
 
@@ -57,7 +56,7 @@ class PHP7_GC_UAF extends Base {
         list: [{
           type: 'label',
           labelWidth: 300,
-          label: PHP7_GC_UAF_LANG['title']
+          label: PHP7_USERFILTER_LANG['title']
         }, {
           type: 'block',
           inputWidth: 'auto',
@@ -66,7 +65,7 @@ class PHP7_GC_UAF extends Base {
             },
             {
               type: "label",
-              label: `<span>${PHP7_GC_UAF_LANG['status_cell']['ver']}</span>`,
+              label: `<span>${PHP7_USERFILTER_LANG['status_cell']['ver']}</span>`,
             },
             {
               type: "newcolumn"
@@ -91,6 +90,16 @@ class PHP7_GC_UAF extends Base {
               labelWidth: 300,
               label: `7.3 - all versions to date`,
             },
+            {
+              type: "label",
+              labelWidth: 300,
+              label: `7.4 - all versions to date`,
+            },
+            {
+              type: "label",
+              labelWidth: 300,
+              label: `8.0 - all versions to date`,
+            }
           ],
         }]
       },
@@ -140,7 +149,7 @@ class PHP7_GC_UAF extends Base {
         cmd: ''
       }) => {
         return {
-          _: PHP7_GC_UAF_EXP(arg['bin'], arg['cmd']),
+          _: PHP7_UserFilter_EXP(arg['bin'], arg['cmd']),
         }
       }
     });
@@ -149,9 +158,9 @@ class PHP7_GC_UAF extends Base {
 
 function references(name, value) {
   let refs = {
+    "PHP 7.0-8.0 user_filter bypass": "https://github.com/mm0r1/exploits/tree/master/php-filter-bypass",
     "AntSword-Labs/bypass_disable_functions/7": "https://github.com/AntSwordProject/AntSword-Labs/blob/master/bypass_disable_functions/7",
-    "php7-gc-bypass": "https://github.com/mm0r1/exploits/tree/master/php7-gc-bypass",
-    "Bug #72530	Use after free in GC with Certain Destructors": "https://bugs.php.net/bug.php?id=72530",
+    "Bug #54350	Memory corruption with user_filter": "https://bugs.php.net/bug.php?id=54350",
   };
   let ret = "";
   Object.keys(refs).map((k) => {
@@ -160,4 +169,4 @@ function references(name, value) {
   return `<div class='simple_link'><ul>${ret}</ul></div>`;
 }
 
-module.exports = PHP7_GC_UAF;
+module.exports = PHP7_UserFilter;

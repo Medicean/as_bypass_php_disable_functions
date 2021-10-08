@@ -34,10 +34,10 @@ class PHP74_FFI extends Base {
     //   toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
     //   return false;
     // }
-    if (!self.CompVersion("7.4", infodata.ver)) {
-      toastr.error(PHP74_FFI_LANG['err']['phpvererr'], LANG_T['error']);
-      return false;
-    }
+    // if (!self.CompVersion("7.4", infodata.ver)) {
+    //   toastr.error(PHP74_FFI_LANG['err']['phpvererr'], LANG_T['error']);
+    //   return false;
+    // }
     // 检查 ffi 扩展
 
     return true;
@@ -155,7 +155,7 @@ class PHP74_FFI extends Base {
       }
     })
     .then(() => {
-      if (self.top.infodata.os.toLowerCase().indexOf("windows") > -1) {
+      if (self.top.infodata.os.toLowerCase().indexOf("win") > -1) {
         new antSword.module.terminal(self.top.opt, {
           exec: (arg = {
             bin: 'cmd',

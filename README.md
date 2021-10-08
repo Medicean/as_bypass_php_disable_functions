@@ -47,7 +47,21 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 
 ## 支持情况:
 
-- [x] LD_PRELOAD (linux only)
+模式 | Bypass 方式 | Linux | Windows |
+:--|:--|:--|:--|
+`LD_PRELOAD`|启动新WebServer| Yes | No |
+`Fastcgi/PHP_FPM` | 启动新WebServer | Yes | Yes (不支持 IIS PIPE ) |
+`Apache_mod_cgi` | 重定向输出到文件 | Yes | No (TODO) |
+`JSON_Serializer_UAF` | stdout | Yes | No (TODO) |
+`PHP7_GC_UAF` | stdout | Yes |  No (TODO) |
+`PHP7_Backtrace_UAF`| stdout | Yes | No (TODO) |
+`PHP74_FFI`| 重定向输出到文件| Yes | Yes | 
+`iconv`|启动新WebServer| Yes |  No (TODO) |
+`PHP7_ReflectionProperty_UAF`| stdout | Yes | No (TODO) |
+`PHP7_UserFilter` | stdout | Yes | Yes |
+
+
+- [x] LD_PRELOAD
 
   利用 LD_PRELOAD 环境变量加载 so 文件, LD_PRELOAD 只在 Linux 系统上才有
 
@@ -65,8 +79,10 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 - [x] PHP7 FFI
 - [x] iconv
 - [x] PHP7 ReflectionProperty UAF ([PHP-Bug-#79820](https://bugs.php.net/bug.php?id=79820))
+- [x] PHP 7.0-8.0 user_filter ([PHP-Bug-#54350](https://bugs.php.net/bug.php?id=54350))
 
 ## 相关链接
 
 * [AntSword 文档](http://doc.u0u.us)
 * [dhtmlx 文档](http://docs.dhtmlx.com/)
+* [mm0r1/exploits](https://github.com/mm0r1/exploits/)
