@@ -33,6 +33,7 @@ module.exports = {
       title: "LD_PRELOAD",
       form: {
         phpbinary: 'php-cli Path (PHP>=5.3)',
+        webroot: 'New WebServer WebRootDir',
       },
       msg: {
         genext_err: "Generate PHP extension failed",
@@ -43,6 +44,7 @@ module.exports = {
       form: {
         fpm_addr: 'FPM/FCGI Address',
         phpbinary: 'php-cli Path (PHP>=5.3)',
+        webroot: 'New WebServer WebRootDir',
       },
       msg: {
         genext_err: "Generate PHP extension failed",
@@ -100,6 +102,7 @@ module.exports = {
       title: "iconv modules Execute Command",
       form: {
         phpbinary: 'php-cli Path (PHP>=5.3)',
+        webroot: 'New WebServer WebRootDir',
       },
       msg: {
         genext_err: "Generate PHP extension failed",

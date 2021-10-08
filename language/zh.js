@@ -33,6 +33,7 @@ module.exports = {
       title: "LD_PRELOAD",
       form: {
         phpbinary: 'php路径(PHP>=5.3, 并非当前运行的shell php)',
+        webroot: '启动的WebServer根目录',
       },
       msg: {
         genext_err: "生成PHP扩展失败",
@@ -43,6 +44,7 @@ module.exports = {
       form: {
         fpm_addr: 'FPM/FCGI 地址',
         phpbinary: 'php路径(PHP>=5.3, 并非当前运行的shell php)',
+        webroot: '启动的WebServer根目录',
       },
       msg: {
         genext_err: "生成PHP扩展失败",
@@ -100,6 +102,7 @@ module.exports = {
       title: "iconv modules 执行命令",
       form: {
         phpbinary: 'php路径(PHP>=5.3, 并非当前运行的shell php)',
+        webroot: '启动的WebServer根目录',
       },
       msg: {
         genext_err: "生成PHP扩展失败",

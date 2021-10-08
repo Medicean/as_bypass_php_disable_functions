@@ -93,6 +93,28 @@ class LD_PRELOAD extends Base {
               });
               return ret;
             })()
+          },
+          {
+            type: 'combo',
+            label: LD_PRELOAD_LANG['form']['webroot'],
+            labelWidth: 300,
+            name: 'webrootdir',
+            required: true,
+            options: (() => {
+              let vals = [
+                self.top.infodata.phpself,
+                self.top.infodata.shell_dir,
+                self.top.infodata.temp_dir,
+              ];
+              let ret = [];
+              vals.map((_) => {
+                ret.push({
+                  text: _,
+                  value: _
+                });
+              });
+              return ret;
+            })()
           }
         ]
       },
@@ -137,6 +159,7 @@ class LD_PRELOAD extends Base {
       let core = self.top.core;
       let formvals = self.form.getValues();
       let phpbinary = formvals['phpbinary'];
+      let webrootdir = formvals['webrootdir'];
       // 生成 ext
       let wdir = "";
       if (self.isOpenBasedir) {
@@ -153,7 +176,7 @@ class LD_PRELOAD extends Base {
       } else {
         wdir = self.top.infodata.temp_dir;
       }
-      let cmd = `${phpbinary} -n -S 127.0.0.1:${port} -t ${self.top.infodata.phpself}`;
+      let cmd = `${phpbinary} -n -S 127.0.0.1:${port} -t ${webrootdir}`;
       let fileBuffer = self.generateExt(cmd);
       if (!fileBuffer) {
         toastr.warning(LD_PRELOAD_LANG['msg']['genext_err'], LANG_T["warning"]);
@@ -206,6 +229,7 @@ class LD_PRELOAD extends Base {
           var ret = response['text'];
           if (ret === '1') {
             toastr.success(LANG['success'], LANG_T['success']);
+            self.form.setItemLabel('status_label', `New WebServer Listen`);
             self.form.setItemLabel('status_msg', `127.0.0.1:${port}`);
             self.uploadProxyScript("127.0.0.1", port);
             self.cell.progressOff();
