@@ -59,6 +59,7 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 `iconv`|启动新WebServer| Yes |  No (TODO) |
 `PHP7_ReflectionProperty_UAF`| stdout | Yes | No (TODO) |
 `PHP7_UserFilter` | stdout | Yes | Yes |
+`PHP_Concat_UAF` | stdout | Yes | No |
 
 
 - [x] LD_PRELOAD
@@ -80,6 +81,7 @@ $ git clone https://github.com/Medicean/as_bypass_php_disable_functions.git
 - [x] iconv
 - [x] PHP7 ReflectionProperty UAF ([PHP-Bug-#79820](https://bugs.php.net/bug.php?id=79820))
 - [x] PHP 7.0-8.0 user_filter ([PHP-Bug-#54350](https://bugs.php.net/bug.php?id=54350))
+- [x] PHP7.3-8.1 concat_function UAF([PHP-Bug-81705](https://bugs.php.net/bug.php?id=81705))
 
 ## 相关链接
 
