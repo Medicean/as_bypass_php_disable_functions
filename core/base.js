@@ -20,8 +20,12 @@ class Base {
     this.cell = cell;
     this.top = top;
     self.isOpenBasedir = (Object.keys(self.top.infodata.open_basedir).length > 0);
-    self.ext_name = `ant_x${self.top.infodata.arch}.${self.top.infodata.os.toLowerCase() === "linux" ? "so": "dll"}`;
-    self.ext_path = path.join(__dirname, `../ext/ant_x${self.top.infodata.arch}.${self.top.infodata.os.toLowerCase() === "linux" ? "so": "dll"}`);
+    let arch = self.top.infodata.arch;
+    if(arch == 32) {
+      arch = 86;
+    }
+    self.ext_name = `ant_x${arch}.${self.top.infodata.os.toLowerCase() === "linux" ? "so": "dll"}`;
+    self.ext_path = path.join(__dirname, `../ext/ant_x${arch}.${self.top.infodata.os.toLowerCase() === "linux" ? "so": "dll"}`);
   }
 
   // 生成扩展
@@ -32,6 +36,7 @@ class Base {
       end = 0;
     switch (self.ext_name) {
       case 'ant_x86.so':
+      case 'ant_x32.so':
         start = 275;
         end = 504;
         break;
@@ -41,6 +46,7 @@ class Base {
         end = 665;
         break;
       case 'ant_x86.dll':
+      case 'ant_x32.dll':
         start = 1544;
         end = 1683;
         break;
