@@ -79,7 +79,13 @@ class Plugin {
         icon: 'file-code-o',
         type: 'button',
         text: "PHP7_UserFilter"
-      }
+      },
+      {
+        id: "php_concat_uaf",
+        icon: 'file-code-o',
+        type: 'button',
+        text: "PHP_Concat_UAF"
+      },
     ];
     let cores = {};
     self.core_menu.map((_) => {

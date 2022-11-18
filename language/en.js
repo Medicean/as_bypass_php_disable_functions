@@ -126,5 +126,14 @@ module.exports = {
         phpvererr: "PHP Version not support, only support 7.0.x, 7.1.x, 7.2.x, 7.3.x, 7.4.x, 8.0.x"
       }
     },
+    php_concat_uaf: {
+      title: "PHP 7.3-8.1 disable_functions bypass [concat_function]",
+      status_cell: {
+        ver: 'PHP_VERSION',
+      },
+      err: {
+        phpvererr: "PHP Version not support, only support 7.3.x, 7.4.x, 8.0.x, 8.1.x"
+      }
+    },
   }
 }
